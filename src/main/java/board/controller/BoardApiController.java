@@ -4,8 +4,8 @@ import board.domain.Board;
 import board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +13,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@Controller
-@RequestMapping("/board")
+@RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
-public class BoardController {
+public class BoardApiController {
 
     private final BoardRepository boardRepository;
 
     @GetMapping("/list")
-    public String ListView(Model model) {
-        List<Board> boards = boardRepository.findAll();
-        model.addAttribute("boards", boards);
-        return "/board/list";
+    public List<Board> ListView(@RequestParam(required = false, defaultValue = "") String title,
+                                @RequestParam(required = false, defaultValue = "") String content) {
+
+        if (!StringUtils.hasLength(title)) {
+            return boardRepository.findAll();
+        } else {
+            return boardRepository.findByTitleOrContent(title,content);
+        }
     }
 
     @GetMapping("/form")
@@ -35,10 +39,10 @@ public class BoardController {
     }
 
     @PostMapping("/form")
-    public String SubmitForm(@ModelAttribute @Validated Board board, BindingResult bindingResult) {
+    public String SubmitForm(@RequestBody @Validated Board board, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.info("error occured!!");
+            log.info(String.valueOf(bindingResult.getFieldError()));
             return "redirect:/board/form";
         }
 
