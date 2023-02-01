@@ -50,28 +50,51 @@
           </div>
         </div>
       </div>
-      <div class="px-3 py-2 border-bottom mb-3">
-        <div class="container d-flex flex-wrap justify-content-center">
-          <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-          </form>
+      <br/>
+      <form>
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <input type="text" id="searchBoard" class="form-control" aria-describedby="passwordHelpInline">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
         </div>
-      </div>
+      </form>
     </header>
+    <br/>
 
     <table class="table table-striped">
         <tr>
-            <td>id</td>
-            <td>title</td> 
-            <td>content</td>    
+            <td>Id</td>
+            <td>Title</td> 
+            <td>Author</td>
+            <td>Option</td>    
         </tr>
         <tr th:each="board : ${boards}">
             <td th:text="${board.id}">kim</td>
             <td><a th:text="${board.title}" th:href="@{/board/edit/(id=${board.id})}"></a></td>
-            <td th:text="${board.content}">Content</td>
+            <td th:text="${board.userName}">Content</td>
             <td><a th:text="|Delete|" th:href="@{/board/delete/(id=${board.id})}"></a></td>
         </tr>
     </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+
+        <li class="page-item" th:classappend="${1 == nowPageNumber} ? 'disabled'">
+          <a class="page-link" th:href="@{/board/list/(page=${nowPageIdx-1})}">Previous</a>
+        </li>
+
+        <li class="page-item" th:classappend="${idx == nowPageNumber} ? 'disabled'" th:each = "idx : ${#numbers.sequence(startIdx,totalPageNumber)}">
+          <a class="page-link" th:href="@{/board/list/(page=${idx-1})}" th:text="${idx}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${totalPageNumber == nowPageNumber} ? 'disabled'">
+          <a class="page-link" th:href="@{/board/list/(page=${nowPageIdx+1})}">Next</a>
+        </li>
+
+      </ul>
+    </nav>
     <br/>
     <a class="btn btn-primary" th:href="@{/board/form}">Write</a>
   </body>

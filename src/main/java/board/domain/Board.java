@@ -18,6 +18,8 @@ public class Board {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     @NotBlank
+    private String userName;
+    @NotBlank
     private String title;
     @NotBlank
     @Type(type="org.hibernate.type.TextType")

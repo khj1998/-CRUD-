@@ -57,12 +57,18 @@
           <label for="title" class="form-label">제목</label>
           <input type="text" class="form-control" th:field="*{title}" aria-describedby="emailHelp">
         </div>
+        <div class="mb-3">
+          <label for="userName" class="form-label">이름</label>
+          <input type="text" class="form-control" th:field="*{userName}" aria-describedby="emailHelp">
+        </div>
+        </br>
         <div class="form-floating">
           <textarea class="form-control" placeholder="Leave a comment here" th:field="*{content}" style="height: 100px"></textarea>
           <label for="floatingTextarea2">Comments</label>
         </div>
         <br/>
         <button class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-primary" th:onClick="|location.href='@{/board/list}'|">Cancel</button>
       </form>
 
     </header>

@@ -2,8 +2,12 @@ package board.controller;
 
 import board.domain.Board;
 import board.repository.BoardRepository;
+import board.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,11 +23,12 @@ import java.util.List;
 public class BoardController {
 
     private final BoardRepository boardRepository;
+    private final ApplicationService applicationService;
 
     @GetMapping("/list")
-    public String ListView(Model model) {
-        List<Board> boards = boardRepository.findAll();
-        model.addAttribute("boards", boards);
+    public String ListView(Model model,
+                           @PageableDefault(size=2,sort="title",direction = Sort.Direction.ASC) Pageable pageable) {
+        applicationService.GetPagesInfos(model,pageable);
         return "/board/list";
     }
 
