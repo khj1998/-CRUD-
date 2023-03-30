@@ -42,7 +42,7 @@ public class Post {
     private Category category;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<>();
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Like> likeList = new ArrayList<>();

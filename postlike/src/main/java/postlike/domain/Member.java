@@ -23,5 +23,8 @@ public class Member {
     private List<Post> postList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Comment> commentList= new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Like> likeList = new ArrayList<>();
 }
