@@ -6,7 +6,9 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,8 +30,13 @@ public class Comment {
     private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL)
+    private List<CommentLike> listList = new ArrayList<>();
 }

@@ -1,18 +1,25 @@
 package postlike.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "likes")
-public class Like {
+@Table(name = "commentlikes")
+public class CommentLike {
+
     @Id
-    @Column(name = "like_id")
+    @Column(name = "comment_like_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 }

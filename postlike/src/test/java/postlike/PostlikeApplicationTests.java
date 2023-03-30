@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import postlike.domain.Comment;
+import postlike.domain.PostLike;
 import postlike.domain.Member;
 import postlike.domain.Post;
 import postlike.repository.CommentRepository;
@@ -22,9 +23,9 @@ class PostlikeApplicationTests {
 	@Autowired
 	PostRepository postRepository;
 	@Autowired
-	LikeRepository likeRepository;
+	CommentRepository commentRepository;
 	@Autowired
-	private CommentRepository commentRepository;
+	LikeRepository likeRepository;
 
 	@Order(1)
 	@Test
@@ -113,6 +114,33 @@ class PostlikeApplicationTests {
 	@Order(3)
 	@Test
 	void addLikeTest() {
-		System.out.println("세번째 테스트 실행");
+		Member member1 = new Member();
+		member1.setUsername("김호진");
+		memberRepository.save(member1);
+
+		Member member2 = new Member();
+		member2.setUsername("김수호");
+		memberRepository.save(member2);
+
+		Post post1 = new Post();
+		post1.setTitle("김호진의 글");
+		post1.setMember(member1);
+		postRepository.save(post1);
+
+		Post post2 = new Post();
+		post2.setTitle("김수호의 글");
+		post2.setMember(member2);
+		postRepository.save(post2);
+
+		PostLike postLike1 = new PostLike();
+		postLike1.setPost(post1);
+
+		member1.getPostLikeList().add(postLike1);
+		post1.getPostLikeList().add(postLike1);
+	}
+
+	@Order(4)
+	@Test
+	void likeTest() {
 	}
 }

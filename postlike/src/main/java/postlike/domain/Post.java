@@ -3,7 +3,6 @@ package postlike.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;;
 
@@ -35,6 +34,7 @@ public class Post {
     private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,5 +45,5 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    private List<Like> likeList = new ArrayList<>();
+    private List<PostLike> postLikeList = new ArrayList<>();
 }
