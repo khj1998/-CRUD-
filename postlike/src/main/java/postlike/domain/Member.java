@@ -13,6 +13,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "member")
+    private String username;
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Like> likeList = new ArrayList<>();
 }

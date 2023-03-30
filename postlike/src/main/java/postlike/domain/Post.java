@@ -1,10 +1,11 @@
 package postlike.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "posts")
@@ -22,7 +23,12 @@ public class Post {
 
     private String imageName;
 
-    private Date uploadDate;
+    @Column(updatable = false)
+    @CreationTimestamp
+    private Date createdAt;
+
+    @UpdateTimestamp
+    private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
@@ -31,6 +37,9 @@ public class Post {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    private List<Like> likeList = new ArrayList<>();
 }
