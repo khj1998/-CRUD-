@@ -13,6 +13,7 @@ import postlike.repository.LikeRepository;
 import postlike.repository.MemberRepository;
 import postlike.repository.PostRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -122,6 +123,10 @@ class PostlikeApplicationTests {
 		member2.setUsername("김수호");
 		memberRepository.save(member2);
 
+		Member member3 = new Member();
+		member3.setUsername("이승규");
+		memberRepository.save(member3);
+
 		Post post1 = new Post();
 		post1.setTitle("김호진의 글");
 		post1.setMember(member1);
@@ -132,11 +137,50 @@ class PostlikeApplicationTests {
 		post2.setMember(member2);
 		postRepository.save(post2);
 
+
+
 		PostLike postLike1 = new PostLike();
 		postLike1.setPost(post1);
+		postLike1.setMember(member1);
 
 		member1.getPostLikeList().add(postLike1);
 		post1.getPostLikeList().add(postLike1);
+		likeRepository.save(postLike1);
+
+		PostLike postLike2 = new PostLike();
+		postLike2.setPost(post2);
+		postLike2.setMember(member2);
+
+		member2.getPostLikeList().add(postLike2);
+		post2.getPostLikeList().add(postLike2);
+		likeRepository.save(postLike2);
+
+		PostLike postLike3 = new PostLike();
+		postLike3.setPost(post1);
+		postLike3.setMember(member3);
+
+		member3.getPostLikeList().add(postLike3);
+		post1.getPostLikeList().add(postLike3);
+		likeRepository.save(postLike3);
+
+		List<PostLike> postLikeList = member1.getPostLikeList();
+		List<PostLike> postLikeList2 = member2.getPostLikeList();
+
+		for (PostLike postLike : postLikeList) {
+			if (!postLike.getMember().getId().equals(member1.getId())) {
+				throw new RuntimeException("해당 게시글에 좋아요를 누른적 없는 유저");
+			}
+			System.out.println(member1+"이 좋아요를 누른 게시물: "+postLike.getPost().getTitle());
+		}
+
+		for (PostLike postLike : postLikeList2) {
+			if (!postLike.getMember().getId().equals(member2.getId())) {
+				throw new RuntimeException("해당 게시글에 좋아요를 누른적 없는 유저");
+			}
+			System.out.println(member2+"이 좋아요를 누른 게시물: "+postLike.getPost().getTitle());
+		}
+
+		Assertions.assertThat(post1.getPostLikeList().size()).isEqualTo(2);
 	}
 
 	@Order(4)
